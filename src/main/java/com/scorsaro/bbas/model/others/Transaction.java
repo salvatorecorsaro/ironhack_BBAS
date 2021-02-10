@@ -1,5 +1,6 @@
 package com.scorsaro.bbas.model.others;
 
+import com.scorsaro.bbas.enums.TransactionType;
 import com.scorsaro.bbas.model.accounts.Account;
 
 import javax.persistence.*;
@@ -18,9 +19,9 @@ public class Transaction {
     @Embedded
     private Money amount;
     private LocalDateTime dateTime;
-
-    //ToDo enum type of transaction
-    //ToDo string reason / comments
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+    private String reason;
 
     public Transaction() {
     }
@@ -63,5 +64,21 @@ public class Transaction {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
