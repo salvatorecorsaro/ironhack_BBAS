@@ -1,13 +1,11 @@
 package com.scorsaro.bbas.model.accounts;
 
 
+import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.others.Transaction;
 import com.scorsaro.bbas.model.users.AccountHolder;
-import com.scorsaro.bbas.model.others.Money;
-
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +17,11 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "currency", column = @Column(name = "balance_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "balance_amount")),
+
+    })
     private Money balance;
 
     @ManyToOne
@@ -26,12 +29,18 @@ public abstract class Account {
     @ManyToOne
     private AccountHolder secondaryOwner;
 
-    @OneToMany (mappedBy = "senderAccount")
+    @OneToMany(mappedBy = "senderAccount")
     private List<Transaction> senderTransactions = new ArrayList<>();
-    @OneToMany (mappedBy = "receiverAccount")
+    @OneToMany(mappedBy = "receiverAccount")
     private List<Transaction> receiverTransaction = new ArrayList<>();
 
-    private BigDecimal penaltyFee;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "currency", column = @Column(name = "penalty_fee_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "penalty_fee_amount")),
+
+    })
+    private Money penaltyFee;
     private LocalDate creationDate;
 
     public Account() {
@@ -73,11 +82,11 @@ public abstract class Account {
         this.secondaryOwner = secondaryOwner;
     }
 
-    public BigDecimal getPenaltyFee() {
+    public Money getPenaltyFee() {
         return penaltyFee;
     }
 
-    public void setPenaltyFee(BigDecimal penaltyFee) {
+    public void setPenaltyFee(Money penaltyFee) {
         this.penaltyFee = penaltyFee;
     }
 

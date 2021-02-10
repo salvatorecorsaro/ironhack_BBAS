@@ -1,16 +1,21 @@
 package com.scorsaro.bbas.model.accounts;
 
+import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 public class CreditCard extends Account {
-    private BigDecimal creditLimit;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "currency", column = @Column(name = "credit_limit_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "credit_limit_amount")),
+
+    })
+    private Money creditLimit;
     private BigDecimal interestRate;
-    private BigDecimal penaltyFee;
 
     public CreditCard() {
     }
@@ -19,11 +24,11 @@ public class CreditCard extends Account {
         super(primaryOwner);
     }
 
-    public BigDecimal getCreditLimit() {
+    public Money getCreditLimit() {
         return creditLimit;
     }
 
-    public void setCreditLimit(BigDecimal creditLimit) {
+    public void setCreditLimit(Money creditLimit) {
         this.creditLimit = creditLimit;
     }
 
@@ -35,13 +40,5 @@ public class CreditCard extends Account {
         this.interestRate = interestRate;
     }
 
-    @Override
-    public BigDecimal getPenaltyFee() {
-        return penaltyFee;
-    }
 
-    @Override
-    public void setPenaltyFee(BigDecimal penaltyFee) {
-        this.penaltyFee = penaltyFee;
-    }
 }

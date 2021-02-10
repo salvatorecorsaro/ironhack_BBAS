@@ -6,7 +6,7 @@ import com.scorsaro.bbas.model.users.AccountHolder;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.PrimaryKeyJoinColumn;
+
 
 @Entity
 public class Student extends Account {

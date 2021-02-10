@@ -1,18 +1,29 @@
 package com.scorsaro.bbas.model.accounts;
 
 import com.scorsaro.bbas.enums.Status;
+import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Entity
 public class Checking extends Account {
     private String secretKey;
-    private BigDecimal minimumBalance;
-    private BigDecimal monthlyMaintenanceFee;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "currency", column = @Column(name = "minimum_balance_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "minimum_balance_amount")),
+
+    })
+    private Money minimumBalance;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "currency", column = @Column(name = "monthly_fee_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "monthy_fee_amount")),
+
+    })
+    private Money monthlyMaintenanceFee;
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -32,19 +43,19 @@ public class Checking extends Account {
         this.secretKey = secretKey;
     }
 
-    public BigDecimal getMinimumBalance() {
+    public Money getMinimumBalance() {
         return minimumBalance;
     }
 
-    public void setMinimumBalance(BigDecimal minimumBalance) {
+    public void setMinimumBalance(Money minimumBalance) {
         this.minimumBalance = minimumBalance;
     }
 
-    public BigDecimal getMonthlyMaintenanceFee() {
+    public Money getMonthlyMaintenanceFee() {
         return monthlyMaintenanceFee;
     }
 
-    public void setMonthlyMaintenanceFee(BigDecimal monthlyMaintenanceFee) {
+    public void setMonthlyMaintenanceFee(Money monthlyMaintenanceFee) {
         this.monthlyMaintenanceFee = monthlyMaintenanceFee;
     }
 

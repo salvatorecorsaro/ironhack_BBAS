@@ -19,6 +19,9 @@ public class Transaction {
     private Money amount;
     private LocalDateTime dateTime;
 
+    //ToDo enum type of transaction
+    //ToDo string reason / comments
+
     public Transaction() {
     }
 
