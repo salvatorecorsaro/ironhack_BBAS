@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDTO {
-    protected Optional<String> id;
+    protected Long id;
     protected Optional<String> balance;
     protected List<Optional<String>> primaryOwner;
     protected List<Optional<String>> secondaryOwner;
@@ -18,11 +18,11 @@ public class AccountDTO {
     public AccountDTO() {
     }
 
-    public Optional<String> getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Optional<String> id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

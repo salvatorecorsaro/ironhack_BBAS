@@ -1,52 +1,52 @@
 package com.scorsaro.bbas.model.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scorsaro.bbas.model.accounts.Account;
 import com.scorsaro.bbas.model.others.Address;
 import com.scorsaro.bbas.model.others.Name;
-import com.scorsaro.bbas.model.accounts.Account;
 
-import javax.persistence.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
-public class AccountHolder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class AccountHolder extends User {
     @Embedded
     private Name name;
     private LocalDate dateOfBirth;
     private Address primaryAddress;
     private String email;
 
-    @OneToOne
-    private AccountUser accountUser;
+//    @OneToOne
+//    private AccountUser accountUser;
 
     @OneToMany(mappedBy = "primaryOwner")
+    @JsonIgnore
     private List<Account> primaryAccounts = new ArrayList<>();
     @OneToMany(mappedBy = "secondaryOwner")
+    @JsonIgnore
     private List<Account> secondaryAccounts = new ArrayList<>();
 
 
     public AccountHolder() {
     }
 
-    public AccountUser getAccountUser() {
-        return accountUser;
+    public AccountHolder(String username, String password, Name name, LocalDate dateOfBirth, Address primaryAddress) {
+        super(username, password);
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.primaryAddress = primaryAddress;
     }
 
-    public void setAccountUser(AccountUser accountUser) {
-        this.accountUser = accountUser;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public AccountHolder(String username, String password, Name name, LocalDate dateOfBirth, Address primaryAddress, String email) {
+        super(username, password);
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.primaryAddress = primaryAddress;
+        this.email = email;
     }
 
     public Name getName() {

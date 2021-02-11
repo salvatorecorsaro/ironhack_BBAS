@@ -1,57 +1,94 @@
 package com.scorsaro.bbas.controller.dto.users;
 
-import com.scorsaro.bbas.controller.dto.others.AddressDTO;
-import com.scorsaro.bbas.controller.dto.others.NameDTO;
+import com.scorsaro.bbas.model.others.Address;
+import com.scorsaro.bbas.model.others.Name;
+import com.scorsaro.bbas.model.users.AccountHolder;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 public class AccountHolderDTO {
-    private Optional<String> id;
-    private Optional<NameDTO> name;
-    private Optional<String> dateOfBirth;
-    private Optional<AddressDTO> primaryAddress;
-    private Optional<String> email;
+    private Long id;
+    private String username;
+    private Name name;
+    private LocalDate dateOfBirth;
+    private Address primaryAddress;
+    private String email;
 
     public AccountHolderDTO() {
     }
 
-    public Optional<String> getId() {
-        return id;
-    }
-
-    public void setId(Optional<String> id) {
+    public AccountHolderDTO(Long id, Name name, LocalDate dateOfBirth, Address primaryAddress) {
         this.id = id;
-    }
-
-    public Optional<NameDTO> getName() {
-        return name;
-    }
-
-    public void setName(Optional<NameDTO> name) {
         this.name = name;
-    }
-
-    public Optional<String> getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Optional<String> dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public Optional<AddressDTO> getPrimaryAddress() {
-        return primaryAddress;
-    }
-
-    public void setPrimaryAddress(Optional<AddressDTO> primaryAddress) {
         this.primaryAddress = primaryAddress;
     }
 
-    public Optional<String> getEmail() {
+    public AccountHolderDTO(Long id, Name name, LocalDate dateOfBirth, Address primaryAddress, String email) {
+        this.id = id;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.primaryAddress = primaryAddress;
+        this.email = email;
+    }
+
+    public static AccountHolderDTO parseFromAccountHolder(AccountHolder accountHolder) {
+        AccountHolderDTO retAccountHolderDTO = new AccountHolderDTO();
+        retAccountHolderDTO.setId(accountHolder.getId());
+        retAccountHolderDTO.setUsername(accountHolder.getUsername());
+        retAccountHolderDTO.setName(accountHolder.getName());
+        retAccountHolderDTO.setDateOfBirth(accountHolder.getDateOfBirth());
+        retAccountHolderDTO.setPrimaryAddress(accountHolder.getPrimaryAddress());
+        retAccountHolderDTO.setEmail(accountHolder.getEmail());
+
+        return retAccountHolderDTO;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public void setName(Name name) {
+        this.name = name;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Address getPrimaryAddress() {
+        return primaryAddress;
+    }
+
+    public void setPrimaryAddress(Address primaryAddress) {
+        this.primaryAddress = primaryAddress;
+    }
+
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Optional<String> email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 }

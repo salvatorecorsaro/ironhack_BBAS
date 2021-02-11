@@ -2,10 +2,10 @@ package com.scorsaro.bbas.controller.dto.users;
 
 import java.util.Optional;
 
-public class ThirdParty extends UserDTO {
+public class ThirdPartyDTO extends UserDTO {
     private Optional<String> hashedKey;
 
-    public ThirdParty() {
+    public ThirdPartyDTO() {
     }
 
     public Optional<String> getHashedKey() {
