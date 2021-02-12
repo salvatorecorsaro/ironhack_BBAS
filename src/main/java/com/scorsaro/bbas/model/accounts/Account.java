@@ -6,6 +6,7 @@ import com.scorsaro.bbas.model.others.Transaction;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,14 @@ public abstract class Account {
 
     public Account(AccountHolder primaryOwner) {
         this.primaryOwner = primaryOwner;
+    }
+
+    public Account(AccountHolder primaryOwner, AccountHolder secondaryOwner) {
+        this.primaryOwner = primaryOwner;
+        this.secondaryOwner = secondaryOwner;
+        setBalance(new Money(BigDecimal.ZERO));
+        setPenaltyFee(new Money(BigDecimal.valueOf(20)));
+        setCreationDate(LocalDate.now());
     }
 
     public long getId() {

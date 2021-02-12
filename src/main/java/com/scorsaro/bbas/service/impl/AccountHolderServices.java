@@ -1,6 +1,6 @@
 package com.scorsaro.bbas.service.impl;
 
-import com.scorsaro.bbas.controller.dto.users.AccountHolderDTO;
+import com.scorsaro.bbas.dto.users.AccountHolderDTO;
 import com.scorsaro.bbas.model.users.AccountHolder;
 import com.scorsaro.bbas.model.users.User;
 import com.scorsaro.bbas.repository.accounts.UserRepository;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,13 +33,15 @@ public class AccountHolderServices implements IAccountHolderServices {
 
     @Override
     public AccountHolderDTO create(AccountHolder accountHolder) {
-        Optional<User> oUser = userRepository.findByUsername(accountHolder.getUsername());
-        if (oUser.isPresent()) {
-            LOGGER.error("Username " + accountHolder.getUsername() + " is already taken");
+        User foundUser = userRepository.findByUsername(accountHolder.getUsername());
+        if (foundUser != null) {
+            LOGGER.error("Error during AccountHolder creation: " + accountHolder.getUsername() + " is already taken");
             throw new IllegalArgumentException("Username " + accountHolder.getUsername() + " is already taken");
         }
+
         accountHolderRepository.save(accountHolder);
         LOGGER.info("AccountHolder created with username: " + accountHolder.getUsername());
+
         return AccountHolderDTO.parseFromAccountHolder(accountHolder);
     }
 

@@ -1,4 +1,4 @@
-package com.scorsaro.bbas.controller.dto.users;
+package com.scorsaro.bbas.dto.users;
 
 import java.util.Optional;
 

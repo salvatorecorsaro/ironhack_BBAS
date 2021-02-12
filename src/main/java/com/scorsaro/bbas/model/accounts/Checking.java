@@ -1,10 +1,12 @@
 package com.scorsaro.bbas.model.accounts;
 
+import com.scorsaro.bbas.dto.accounts.CheckingDTO;
 import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Checking extends Account {
@@ -30,9 +32,29 @@ public class Checking extends Account {
     public Checking() {
     }
 
+
+    public static Checking parseFromCheckingDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, CheckingDTO checkingDTO) {
+        return new Checking(
+                primaryOwner,
+                secondaryOwner,
+                checkingDTO.getSecretKey(),
+                new Money(checkingDTO.getMinimumBalance()),
+                new Money(checkingDTO.getMonthlyMaintenanceFee())
+        );
+    }
+
     public Checking(AccountHolder primaryOwner, String secretKey) {
         super(primaryOwner);
         this.secretKey = secretKey;
+    }
+
+    public Checking(AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, Money minimumBalance, Money monthlyMaintenanceFee) {
+        super(primaryOwner, secondaryOwner);
+        this.secretKey = secretKey;
+        this.minimumBalance = minimumBalance;
+        setStatus(Status.ACTIVE);
+        setPenaltyFee(new Money(BigDecimal.valueOf(20)));
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
     public String getSecretKey() {

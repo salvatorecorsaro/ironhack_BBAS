@@ -1,4 +1,4 @@
-package com.scorsaro.bbas.controller.dto.accounts;
+package com.scorsaro.bbas.dto.accounts;
 
 import java.math.BigDecimal;
 import java.util.Optional;

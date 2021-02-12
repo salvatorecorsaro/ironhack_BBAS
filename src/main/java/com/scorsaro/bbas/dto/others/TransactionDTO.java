@@ -1,6 +1,6 @@
-package com.scorsaro.bbas.controller.dto.others;
+package com.scorsaro.bbas.dto.others;
 
-import com.scorsaro.bbas.controller.dto.accounts.AccountDTO;
+import com.scorsaro.bbas.dto.accounts.AccountDTO;
 
 import java.math.BigDecimal;
 import java.util.Optional;

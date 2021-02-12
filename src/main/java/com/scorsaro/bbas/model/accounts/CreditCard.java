@@ -1,5 +1,6 @@
 package com.scorsaro.bbas.model.accounts;
 
+import com.scorsaro.bbas.dto.accounts.CreditCardDTO;
 import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
@@ -22,6 +23,19 @@ public class CreditCard extends Account {
 
     public CreditCard(AccountHolder primaryOwner) {
         super(primaryOwner);
+    }
+
+    public CreditCard(AccountHolder primaryOwner, AccountHolder secondaryOwner, Money creditLimit, BigDecimal interestRate) {
+        super(primaryOwner, secondaryOwner);
+        this.creditLimit = creditLimit;
+        this.interestRate = interestRate;
+    }
+
+    public static CreditCard parseFromCreditCardDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, CreditCardDTO creditCardDTO) {
+        return new CreditCard(primaryOwner,
+                secondaryOwner,
+                new Money(creditCardDTO.getCreditLimit()),
+                creditCardDTO.getInterestRate());
     }
 
     public Money getCreditLimit() {
