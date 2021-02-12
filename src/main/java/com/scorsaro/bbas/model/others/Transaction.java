@@ -1,5 +1,6 @@
 package com.scorsaro.bbas.model.others;
 
+import com.scorsaro.bbas.dto.others.TransactionDTO;
 import com.scorsaro.bbas.enums.TransactionType;
 import com.scorsaro.bbas.model.accounts.Account;
 
@@ -17,13 +18,38 @@ public class Transaction {
     @ManyToOne()
     private Account receiverAccount;
     @Embedded
+    private Name receiverName;
+    @Embedded
     private Money amount;
-    private LocalDateTime dateTime;
+    private String reason;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    private String reason;
+    private LocalDateTime transactionDateTime;
 
     public Transaction() {
+    }
+
+    public Transaction(Account senderAccount,
+                       Account receiverAccount,
+                       Name receiverName,
+                       Money amount,
+                       String reason,
+                       TransactionType transactionType) {
+        this.senderAccount = senderAccount;
+        this.receiverAccount = receiverAccount;
+        this.receiverName = receiverName;
+        this.amount = amount;
+        this.reason = reason;
+        this.transactionType = transactionType;
+        setTransactionDateTime(LocalDateTime.now());
+    }
+
+    public static Transaction parseFromTransactionDTO(Account senderAccount, Account receiverAccount, TransactionDTO transactionDTO) {
+        return new Transaction(senderAccount,
+                receiverAccount,
+                transactionDTO.getReceiverName(), new Money(transactionDTO.getAmount()),
+                transactionDTO.getReason(), transactionDTO.getTransactionType()
+        );
     }
 
     public long getId() {
@@ -58,12 +84,20 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public Name getReceiverName() {
+        return receiverName;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setReceiverName(Name receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public LocalDateTime getTransactionDateTime() {
+        return transactionDateTime;
+    }
+
+    public void setTransactionDateTime(LocalDateTime transactionDateTime) {
+        this.transactionDateTime = transactionDateTime;
     }
 
     public TransactionType getTransactionType() {

@@ -1,75 +1,117 @@
 package com.scorsaro.bbas.dto.others;
 
-import com.scorsaro.bbas.dto.accounts.AccountDTO;
+import com.scorsaro.bbas.enums.TransactionType;
+import com.scorsaro.bbas.model.others.Name;
+import com.scorsaro.bbas.model.others.Transaction;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 public class TransactionDTO {
-    private Optional<String> id;
-    private Optional<AccountDTO> senderAccount;
-    private Optional<AccountDTO> receiverAccount;
-    private Optional<BigDecimal> amount;
-    private Optional<String> dateTime;
-    private Optional<String> transactionType;
-    private Optional<String> reason;
+    private long id;
+    private long senderAccount;
+    private long receiverAccount;
+    private Name receiverName;
+    private BigDecimal amount;
+    private TransactionType transactionType;
+    private String reason;
+    private LocalDateTime localDateTime;
 
     public TransactionDTO() {
     }
 
-    public Optional<String> getId() {
+    public TransactionDTO(long id,
+                          long senderAccount,
+                          long receiverAccount,
+                          Name receiverName,
+                          BigDecimal amount,
+                          TransactionType transactionType,
+                          String reason,
+                          LocalDateTime localDateTime) {
+        this.id = id;
+        this.senderAccount = senderAccount;
+        this.receiverAccount = receiverAccount;
+        this.receiverName = receiverName;
+        this.amount = amount;
+        this.transactionType = transactionType;
+        this.reason = reason;
+        this.localDateTime = localDateTime;
+    }
+
+    public static TransactionDTO parseFromTransaction(Transaction transaction) {
+        return new TransactionDTO(
+                transaction.getId(),
+                transaction.getSenderAccount().getId(),
+                transaction.getReceiverAccount().getId(),
+                transaction.getReceiverAccount().getPrimaryOwner().getName(),
+                transaction.getAmount().getAmount(),
+                transaction.getTransactionType(),
+                transaction.getReason(),
+                transaction.getTransactionDateTime()
+        );
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Optional<String> id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Optional<AccountDTO> getSenderAccount() {
+    public long getSenderAccount() {
         return senderAccount;
     }
 
-    public void setSenderAccount(Optional<AccountDTO> senderAccount) {
+    public void setSenderAccount(long senderAccount) {
         this.senderAccount = senderAccount;
     }
 
-    public Optional<AccountDTO> getReceiverAccount() {
+    public long getReceiverAccount() {
         return receiverAccount;
     }
 
-    public void setReceiverAccount(Optional<AccountDTO> receiverAccount) {
+    public void setReceiverAccount(long receiverAccount) {
         this.receiverAccount = receiverAccount;
     }
 
-    public Optional<BigDecimal> getAmount() {
+    public Name getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(Name receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Optional<BigDecimal> amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public Optional<String> getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Optional<String> dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public Optional<String> getTransactionType() {
+    public TransactionType getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(Optional<String> transactionType) {
+    public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
 
-    public Optional<String> getReason() {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason(Optional<String> reason) {
+    public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 }
