@@ -1,47 +1,141 @@
 package com.scorsaro.bbas.dto.accounts;
 
-import java.math.BigDecimal;
-import java.util.Optional;
+import com.scorsaro.bbas.enums.Status;
+import com.scorsaro.bbas.model.accounts.Saving;
 
-public class SavingDTO extends AccountDTO {
-    private Optional<String> secretKey;
-    private Optional<BigDecimal> minimumBalance;
-    private Optional<String> status;
-    private Optional<BigDecimal> interestRate;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public class SavingDTO {
+    private long id;
+    private BigDecimal balance;
+    private Long primaryOwner;
+    private Long secondaryOwner;
+    private BigDecimal penaltyFee;
+    private Status status;
+    private String secretKey;
+    private BigDecimal minimumBalance;
+    private BigDecimal interestRate;
+    private LocalDate creationDate;
 
     public SavingDTO() {
-        super();
     }
 
-    public Optional<String> getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(Optional<String> secretKey) {
+    public SavingDTO(long id,
+                     BigDecimal balance,
+                     Long primaryOwner,
+                     Long secondaryOwner,
+                     BigDecimal penaltyFee,
+                     Status status,
+                     String secretKey,
+                     BigDecimal minimumBalance,
+                     BigDecimal interestRate,
+                     LocalDate creationDate) {
+        this.id = id;
+        this.balance = balance;
+        this.primaryOwner = primaryOwner;
+        this.secondaryOwner = secondaryOwner;
+        this.penaltyFee = penaltyFee;
+        this.status = status;
         this.secretKey = secretKey;
-    }
-
-    public Optional<BigDecimal> getMinimumBalance() {
-        return minimumBalance;
-    }
-
-    public void setMinimumBalance(Optional<BigDecimal> minimumBalance) {
         this.minimumBalance = minimumBalance;
+        this.interestRate = interestRate;
+        this.creationDate = creationDate;
     }
 
-    public Optional<String> getStatus() {
+    public static SavingDTO parseFromSaving(Saving saving) {
+        return new SavingDTO(
+                saving.getId(),
+                saving.getBalance().getAmount(),
+                saving.getPrimaryOwner().getId(),
+                saving.getSecondaryOwner().getId(),
+                saving.getPenaltyFee().getAmount(),
+                saving.getStatus(),
+                saving.getSecretKey(),
+                saving.getMinimumBalance().getAmount(),
+                saving.getInterestRate(),
+                saving.getCreationDate()
+        );
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Long getPrimaryOwner() {
+        return primaryOwner;
+    }
+
+    public void setPrimaryOwner(Long primaryOwner) {
+        this.primaryOwner = primaryOwner;
+    }
+
+    public Long getSecondaryOwner() {
+        return secondaryOwner;
+    }
+
+    public void setSecondaryOwner(Long secondaryOwner) {
+        this.secondaryOwner = secondaryOwner;
+    }
+
+    public BigDecimal getPenaltyFee() {
+        return penaltyFee;
+    }
+
+    public void setPenaltyFee(BigDecimal penaltyFee) {
+        this.penaltyFee = penaltyFee;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Optional<String> status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Optional<BigDecimal> getInterestRate() {
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public BigDecimal getMinimumBalance() {
+        return minimumBalance;
+    }
+
+    public void setMinimumBalance(BigDecimal minimumBalance) {
+        this.minimumBalance = minimumBalance;
+    }
+
+    public BigDecimal getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(Optional<BigDecimal> interestRate) {
+    public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
 }
+

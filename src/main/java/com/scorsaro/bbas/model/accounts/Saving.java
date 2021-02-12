@@ -1,5 +1,6 @@
 package com.scorsaro.bbas.model.accounts;
 
+import com.scorsaro.bbas.dto.accounts.SavingDTO;
 import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.users.AccountHolder;
@@ -24,9 +25,27 @@ public class Saving extends Account {
     public Saving() {
     }
 
-    public Saving(AccountHolder primaryOwner, String secretKey) {
-        super(primaryOwner);
+    public Saving(AccountHolder primaryOwner,
+                  AccountHolder secondaryOwner,
+                  String secretKey,
+                  Money minimumBalance,
+                  BigDecimal interestRate) {
+        super(primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
+        this.minimumBalance = minimumBalance;
+        this.status = Status.ACTIVE;
+        this.interestRate = interestRate;
+    }
+
+    public static Saving parseFromSavingDto(AccountHolder primaryOwner,
+                                            AccountHolder secondaryOwner,
+                                            SavingDTO savingDTO) {
+        return new Saving(primaryOwner,
+                secondaryOwner,
+                savingDTO.getSecretKey(),
+                new Money(savingDTO.getMinimumBalance()),
+                savingDTO.getInterestRate()
+        );
     }
 
     public String getSecretKey() {
