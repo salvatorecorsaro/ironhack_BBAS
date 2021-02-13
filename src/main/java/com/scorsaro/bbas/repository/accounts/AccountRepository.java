@@ -14,7 +14,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAllAccountsOwnedByUser(@Param("id") long id);
 
     @Query("SELECT a FROM Account a WHERE (primaryOwner = :userId OR secondaryOwner = :userId) AND id = :accountId")
-    Account findAccountByIdIfOwnedByUser(@Param("userId") Integer userId, @Param("accountId") Integer accountId);
+    Account findAccountByIdIfOwnedByUser(@Param("userId") long userId, @Param("accountId") long accountId);
+
+    @Query("SELECT a From Account a WHERE a.id = :accountId")
+    Account findAccountById(@Param("accountId") Long id);
 
 }
 

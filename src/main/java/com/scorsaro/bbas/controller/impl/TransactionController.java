@@ -5,10 +5,7 @@ import com.scorsaro.bbas.dto.others.TransactionDTO;
 import com.scorsaro.bbas.service.interfaces.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +20,13 @@ public class TransactionController implements ITransactionController {
     @ResponseStatus(HttpStatus.OK)
     public List<TransactionDTO> findAll() {
         return transactionService.findAll();
+    }
+
+    @Override
+    @PostMapping("/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransactionDTO create(@RequestBody TransactionDTO transactionDTO) {
+        return transactionService.create(transactionDTO);
     }
 
 

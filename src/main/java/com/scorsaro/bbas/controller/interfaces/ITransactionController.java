@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ITransactionController {
     List<TransactionDTO> findAll();
+
+    TransactionDTO create(TransactionDTO transactionDTO);
 }

@@ -14,9 +14,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne()
-    private Account senderAccount;
-    @ManyToOne()
     private Account receiverAccount;
+    @ManyToOne()
+    private Account senderAccount;
     @Embedded
     private Name receiverName;
     @Embedded
