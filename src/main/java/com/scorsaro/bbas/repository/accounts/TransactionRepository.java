@@ -15,6 +15,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("SELECT MAX(t.transactionDateTime) FROM Transaction t WHERE sender_account_id = :accountId")
     LocalDateTime findLastTransaction(@Param("accountId") Account id);
 
+    //TODO same algo for last interest, last fee, last update
+
     @Query(value = "SELECT SUM(t.amount) FROM transaction t WHERE CAST(t.transaction_date_time AS DATE) != CAST(:currentDate AS DATE) && sender_account_id = :accountId GROUP BY CAST(t.transaction_date_time AS DATE), sender_account_id ORDER BY SUM(t.amount) DESC LIMIT 1",
             nativeQuery = true)
     BigDecimal findHighestDailyTransactionByCustomer(@Param("currentDate") LocalDateTime currentDate, @Param("accountId") Account id);

@@ -2,6 +2,10 @@ package com.scorsaro.bbas.service.interfaces;
 
 import com.scorsaro.bbas.model.others.Transaction;
 
+import java.time.LocalDate;
+
 public interface IValidationServices {
-    void validate(Transaction transaction);
+    boolean validateTransaction(Transaction transaction);
+
+    boolean validateStudentAge(LocalDate dateOfBirth);
 }

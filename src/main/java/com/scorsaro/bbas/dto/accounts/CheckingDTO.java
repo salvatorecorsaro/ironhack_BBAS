@@ -2,6 +2,7 @@ package com.scorsaro.bbas.dto.accounts;
 
 import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.accounts.Checking;
+import com.scorsaro.bbas.model.accounts.Student;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -43,6 +44,24 @@ public class CheckingDTO {
         this.creationDate = creationDate;
     }
 
+    public CheckingDTO(long id,
+                       BigDecimal balance,
+                       Long primaryOwner,
+                       Long secondaryOwner,
+                       BigDecimal penaltyFee,
+                       Status status,
+                       String secretKey,
+                       LocalDate creationDate) {
+        this.id = id;
+        this.balance = balance;
+        this.primaryOwner = primaryOwner;
+        this.secondaryOwner = secondaryOwner;
+        this.penaltyFee = penaltyFee;
+        this.status = status;
+        this.secretKey = secretKey;
+        this.creationDate = creationDate;
+    }
+
     public static CheckingDTO parseFromChecking(Checking checking) {
         return new CheckingDTO(checking.getId(),
                 checking.getBalance().getAmount(),
@@ -54,6 +73,19 @@ public class CheckingDTO {
                 checking.getMinimumBalance().getAmount(),
                 checking.getMonthlyMaintenanceFee().getAmount(),
                 checking.getCreationDate()
+        );
+    }
+
+
+    public static CheckingDTO parseFromStudent(Student student) {
+        return new CheckingDTO(student.getId(),
+                student.getBalance().getAmount(),
+                student.getPrimaryOwner().getId(),
+                student.getSecondaryOwner().getId(),
+                student.getPenaltyFee().getAmount(),
+                student.getStatus(),
+                student.getSecretKey(),
+                student.getCreationDate()
         );
     }
 

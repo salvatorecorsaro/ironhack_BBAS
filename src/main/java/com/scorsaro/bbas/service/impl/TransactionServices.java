@@ -48,7 +48,9 @@ public class TransactionServices implements ITransactionService {
 
         Transaction transaction = Transaction.parseFromTransactionDTO(senderAccount, receiverAccount, transactionDTO);
         //do verification
-        validationServices.validate(transaction);
+        if (!(validationServices.validateTransaction(transaction))) {
+            throw new IllegalArgumentException("validation failed!");
+        }
         transactionRepository.save(transaction);
         return TransactionDTO.parseFromTransaction(transaction);
     }

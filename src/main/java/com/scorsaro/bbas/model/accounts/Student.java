@@ -1,6 +1,6 @@
 package com.scorsaro.bbas.model.accounts;
 
-import com.scorsaro.bbas.dto.accounts.StudentDTO;
+import com.scorsaro.bbas.dto.accounts.CheckingDTO;
 import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
@@ -24,8 +24,8 @@ public class Student extends Account {
         this.status = status;
     }
 
-    public static Student parseFromStudentDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, StudentDTO studentDTO) {
-        return new Student(primaryOwner, secondaryOwner, studentDTO.getSecretKey(), studentDTO.getStatus());
+    public static Student parseFromCheckingDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, CheckingDTO checkingDTO) {
+        return new Student(primaryOwner, secondaryOwner, checkingDTO.getSecretKey(), checkingDTO.getStatus());
     }
 
     public String getSecretKey() {

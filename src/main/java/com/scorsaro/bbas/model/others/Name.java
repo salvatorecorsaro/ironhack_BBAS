@@ -1,6 +1,7 @@
 package com.scorsaro.bbas.model.others;
 
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class Name {
@@ -21,6 +22,19 @@ public class Name {
 
     public Name() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Name name = (Name) o;
+        return getFirstName().equals(name.getFirstName()) && Objects.equals(getMiddleName(), name.getMiddleName()) && getLastName().equals(name.getLastName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFirstName(), getMiddleName(), getLastName());
     }
 
     public String getFirstName() {

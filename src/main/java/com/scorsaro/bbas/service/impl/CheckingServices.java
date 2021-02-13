@@ -2,10 +2,13 @@ package com.scorsaro.bbas.service.impl;
 
 import com.scorsaro.bbas.dto.accounts.CheckingDTO;
 import com.scorsaro.bbas.model.accounts.Checking;
+import com.scorsaro.bbas.model.accounts.Student;
 import com.scorsaro.bbas.model.users.AccountHolder;
 import com.scorsaro.bbas.repository.accounts.CheckingRepository;
+import com.scorsaro.bbas.repository.accounts.StudentRepository;
 import com.scorsaro.bbas.repository.users.AccountHolderRepository;
 import com.scorsaro.bbas.service.interfaces.ICheckingServices;
+import com.scorsaro.bbas.service.interfaces.IValidationServices;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,11 @@ public class CheckingServices implements ICheckingServices {
     @Autowired
     CheckingRepository checkingRepository;
     @Autowired
+    StudentRepository studentRepository;
+    @Autowired
     AccountHolderRepository accountHolderRepository;
+    @Autowired
+    IValidationServices validationServices;
 
 
     @Override
@@ -37,9 +44,16 @@ public class CheckingServices implements ICheckingServices {
         long secondaryOwnerId = checkingDTO.getSecondaryOwner();
         primaryOwner = getAccountHolder(primaryOwnerId, "Bad primaryOwner Id ");
         secondaryOwner = getAccountHolder(secondaryOwnerId, "Bad secondaryOwner Id ");
-        Checking checking = Checking.parseFromCheckingDTO(primaryOwner, secondaryOwner, checkingDTO);
-        checkingRepository.save(checking);
-        return CheckingDTO.parseFromChecking(checking);
+        // check if one of the owners is under 24 and in that case create a student account
+        if (validationServices.validateStudentAge(primaryOwner.getDateOfBirth()) || validationServices.validateStudentAge(secondaryOwner.getDateOfBirth())) {
+            Student student = Student.parseFromCheckingDTO(primaryOwner, secondaryOwner, checkingDTO);
+            studentRepository.save(student);
+            return CheckingDTO.parseFromStudent(student);
+        } else {
+            Checking checking = Checking.parseFromCheckingDTO(primaryOwner, secondaryOwner, checkingDTO);
+            checkingRepository.save(checking);
+            return CheckingDTO.parseFromChecking(checking);
+        }
     }
 
     private AccountHolder getAccountHolder(long primaryOwnerId, String s) {

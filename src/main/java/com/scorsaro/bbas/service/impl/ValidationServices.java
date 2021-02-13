@@ -1,5 +1,6 @@
 package com.scorsaro.bbas.service.impl;
 
+import com.scorsaro.bbas.model.others.Name;
 import com.scorsaro.bbas.model.others.Transaction;
 import com.scorsaro.bbas.repository.accounts.*;
 import com.scorsaro.bbas.repository.users.AccountHolderRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -33,10 +35,29 @@ public class ValidationServices implements IValidationServices {
     TransactionRepository transactionRepository;
 
     @Override
-    public void validate(Transaction transaction) {
+    public boolean validateTransaction(Transaction transaction) {
 //        validateSufficientFunds(transaction);
         validateTimeSinceLastTransaction(transaction);
         validateDailyLimit(transaction);
+        validateRequestName(transaction);
+
+        return true;
+    }
+
+    @Override
+    public boolean validateStudentAge(LocalDate dateOfBirth) {
+        //TODO tests
+        long yearPassed = ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
+        return yearPassed < 24;
+    }
+
+    private void validateRequestName(Transaction transaction) {
+        //TODO test Name validation
+        Name receiverRequestName = transaction.getReceiverName();
+        Name receiverExpectedName = transaction.getReceiverAccount().getPrimaryOwner().getName();
+        if (!(receiverRequestName.equals(receiverExpectedName))) {
+            throw new IllegalArgumentException("Name from request and account are not the same");
+        }
     }
 
     private void validateDailyLimit(Transaction transaction) {
