@@ -25,6 +25,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
     @Autowired
     ITransactionServices transactionServices;
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     @Override
     public BalanceDTO updateCheckingBalance(Checking account) {
         Money accountBalance = account.getBalance();
@@ -36,6 +39,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
         return applyMonthlyMaintenanceFee(account, accountBalance, monthlyMaintenanceFeeToPay, monthsPassed);
     }
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     @Override
     public BalanceDTO updateSavingBalance(Saving account) {
         Money accountBalance = account.getBalance();
@@ -47,6 +53,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
         return applyYearInterest(account, accountBalance, interestToAdd, yearsPassed);
     }
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     @Override
     public BalanceDTO updateCreditCard(CreditCard account) {
         Money accountBalance = account.getBalance();
@@ -58,6 +67,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
         return applyMonthlyInterest(account, accountBalance, interestToAdd, monthsPassed);
     }
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     private BalanceDTO applyMonthlyInterest(CreditCard account, Money accountBalance, BigDecimal interestToAdd, long monthsPassed) {
         if (monthsPassed > 0) {
             for (long i = 0; i < monthsPassed; i++) {
@@ -69,6 +81,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
     }
 
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     private BalanceDTO applyYearInterest(Saving account, Money accountBalance, BigDecimal interestToAdd, long yearsPassed) {
         if (yearsPassed > 0) {
             for (long i = 0; i < yearsPassed; i++) {
@@ -79,6 +94,9 @@ public class TimeBasedOperationsServices implements ITimeBaseOperationServices {
         return new BalanceDTO(accountBalance.getAmount().add(interestToAdd));
     }
 
+    /*
+    Return an updated balance (timeBasedOperation like monthly fee and interest are applied)
+     */
     private BalanceDTO applyMonthlyMaintenanceFee(Checking account, Money accountBalance, BigDecimal monthlyMaintenanceFeeToPay, long monthsPassed) {
         if (monthsPassed > 0) {
             for (long i = 0; i < monthsPassed; i++) {

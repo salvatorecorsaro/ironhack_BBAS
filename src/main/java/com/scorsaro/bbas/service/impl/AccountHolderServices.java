@@ -36,12 +36,19 @@ public class AccountHolderServices implements IAccountHolderServices {
     IAccountServices accountServices;
 
 
+    /*
+     Return a List of all the AccountHolders in the database
+     */
     @Override
     public List<AccountHolderDTO> getAll() {
         LOGGER.info("Get all AccountHolder request");
         return accountHolderRepository.findAll().stream().map(accountHolder -> AccountHolderDTO.parseFromAccountHolder(accountHolder)).collect(Collectors.toList());
     }
 
+
+    /*
+      Create a new AccountHolder from the DTO that has been passed in the requestBody. It perform a check to assure there are not duplicated usernames
+     */
     @Override
     public AccountHolderDTO create(AccountHolderDTO accountHolderDTO) {
         User foundUser = userRepository.findByUsername(accountHolderDTO.getUsername().toLowerCase());
@@ -59,5 +66,4 @@ public class AccountHolderServices implements IAccountHolderServices {
         LOGGER.info("AccountHolder created with username: " + accountHolder.getUsername());
         return AccountHolderDTO.parseFromAccountHolder(accountHolder);
     }
-
 }

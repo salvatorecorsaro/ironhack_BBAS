@@ -36,6 +36,9 @@ public class CheckingServices implements ICheckingServices {
         return checkingRepository.findAll().stream().map(checking -> CheckingDTO.parseFromChecking(checking)).collect(Collectors.toList());
     }
 
+    /*
+     Create a checking account or a student account based on the age of one of the owners
+     */
     @Override
     public CheckingDTO create(CheckingDTO checkingDTO) {
         AccountHolder primaryOwner;

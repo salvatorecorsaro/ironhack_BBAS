@@ -9,7 +9,6 @@ import com.scorsaro.bbas.model.accounts.CreditCard;
 import com.scorsaro.bbas.model.accounts.Saving;
 import com.scorsaro.bbas.model.others.Money;
 import com.scorsaro.bbas.model.others.Transaction;
-import com.scorsaro.bbas.model.users.AccountHolder;
 import com.scorsaro.bbas.model.users.User;
 import com.scorsaro.bbas.repository.accounts.AccountRepository;
 import com.scorsaro.bbas.repository.accounts.TransactionRepository;
@@ -42,6 +41,9 @@ public class TransactionServices implements ITransactionServices {
         return transactionRepository.findAll().stream().map(transaction -> TransactionDTO.parseFromTransaction(transaction)).collect(Collectors.toList());
     }
 
+    /*
+    Create and apply a TRANSFER transaction after having validated it
+     */
     @Override
     public TransactionDTO transferTransaction(User user, TransactionDTO transactionDTO) {
         if (!(validationServices.validateAccountAreDifferent(transactionDTO.getSenderAccount(), transactionDTO.getReceiverAccount())))
@@ -82,6 +84,9 @@ public class TransactionServices implements ITransactionServices {
 //        }
     }
 
+    /*
+        TRANSFER transaction for when a TPU is involved
+     */
     @Override
     public TransactionDTO transferTransactionToTPU(User user, TransactionDTO transactionDTO, String hashedKey) {
         if (!(validationServices.validateAccountAreDifferent(transactionDTO.getSenderAccount(), transactionDTO.getReceiverAccount())))
@@ -107,6 +112,9 @@ public class TransactionServices implements ITransactionServices {
         return TransactionDTO.parseFromTransaction(transaction);
     }
 
+    /*
+       TRANSFER transaction for when a TPU is involved
+    */
     @Override
     public TransactionDTO transferTransactionFromTPU(User user, TransactionDTO transactionDTO, String hashedKey) {
         if (!(validationServices.validateAccountAreDifferent(transactionDTO.getSenderAccount(), transactionDTO.getReceiverAccount())))
@@ -135,6 +143,9 @@ public class TransactionServices implements ITransactionServices {
         return TransactionDTO.parseFromTransaction(transaction);
     }
 
+    /*
+        Method that apply penalty fee after TRANSFER transaction
+     */
     private void updateIfPenaltyFeeHasToBeAppliedAfterTransfer(Transaction transaction) {
         if (transaction.getSenderAccount() instanceof Checking) {
             Checking tChecking = (Checking) transaction.getSenderAccount();
@@ -154,6 +165,9 @@ public class TransactionServices implements ITransactionServices {
         }
     }
 
+    /*
+      Method that apply penalty fee after MONTHLY_FEE transaction
+   */
     private void updateIfPenaltyFeeHasToBeAppliedAfterMonthlyFee(Transaction transaction) {
         if (transaction.getSenderAccount() instanceof Checking) {
             Checking tChecking = (Checking) transaction.getReceiverAccount();
@@ -173,6 +187,9 @@ public class TransactionServices implements ITransactionServices {
         }
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeTransfer(Transaction transaction, CreditCard tCreditCard) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -184,6 +201,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeNotTransfer(Transaction transaction, Saving tSaving) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -195,6 +215,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeNotTransfer(Transaction transaction, Checking tChecking) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -206,6 +229,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeNotTransfer(Transaction transaction, CreditCard tCreditCard) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -217,6 +243,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeTransfer(Transaction transaction, Saving tSaving) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -228,6 +257,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void updateWithPenaltyFeeTransfer(Transaction transaction, Checking tChecking) {
         Transaction penaltyFeeTransaction = new Transaction(null,
                 transaction.getSenderAccount(),
@@ -239,6 +271,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(penaltyFeeTransaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void applyPenaltyFeeChanges(Transaction penaltyFeeTransaction) {
         BigDecimal newBalance = penaltyFeeTransaction.getReceiverAccount().getBalance().getAmount().subtract(penaltyFeeTransaction.getAmount().getAmount());
         Account account = penaltyFeeTransaction.getReceiverAccount();
@@ -246,6 +281,9 @@ public class TransactionServices implements ITransactionServices {
         accountRepository.save(account);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void applyTransferChanges(TransactionDTO transactionDTO, Account senderAccount, Account receiverAccount) {
         Money newSenderBalance = new Money(senderAccount.getBalance().getAmount().subtract(transactionDTO.getAmount()));
         Money newReceiverBalance = new Money(receiverAccount.getBalance().getAmount().add(transactionDTO.getAmount()));
@@ -255,6 +293,9 @@ public class TransactionServices implements ITransactionServices {
         accountRepository.save(receiverAccount);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private void applyTransferChangesTPU(TransactionDTO transactionDTO, Account senderAccount, Account receiverAccount) {
         Money newSenderBalance = new Money(senderAccount.getBalance().getAmount().subtract(transactionDTO.getAmount()));
         Money newReceiverBalance = new Money(receiverAccount.getBalance().getAmount().add(transactionDTO.getAmount()));
@@ -262,6 +303,9 @@ public class TransactionServices implements ITransactionServices {
         accountRepository.save(senderAccount);
     }
 
+    /*
+        Method used by admin to modify the account balance. It stores the transaction as ADMIN_OPERATION
+     */
     @Override
     public AdminRequestDTO modifyAccountBalance(AdminRequestDTO adminRequestDTO) {
         Account receiverAccount = accountRepository.findAccountById(adminRequestDTO.getAccountId());
@@ -279,6 +323,9 @@ public class TransactionServices implements ITransactionServices {
         return adminRequestDTO;
     }
 
+    /*
+        Method used to apply the MONTHLY_MAINTENANCE_FEE as a type of transaction
+     */
     @Override
     public void createMonthlyMaintenanceFee(Checking account, BigDecimal monthlyMaintenanceFeeToPay) {
         Transaction transaction = new Transaction(null,
@@ -294,6 +341,9 @@ public class TransactionServices implements ITransactionServices {
         updateIfPenaltyFeeHasToBeAppliedAfterMonthlyFee(transaction);
     }
 
+    /*
+        Method used to apply the INTEREST as a type of transaction
+     */
     @Override
     public void createInterestTransaction(Saving account, BigDecimal interestToAdd) {
         Transaction transaction = new Transaction(null,
@@ -308,6 +358,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(transaction);
     }
 
+    /*
+        Method used to apply the INTEREST as a type of transaction
+     */
     @Override
     public void createInterestTransaction(CreditCard account, BigDecimal interestToAdd) {
         Transaction transaction = new Transaction(null,
@@ -322,6 +375,9 @@ public class TransactionServices implements ITransactionServices {
         transactionRepository.save(transaction);
     }
 
+    /*
+        Helper method to the previous ones
+     */
     private Account applyAdminBalanceOperationChanges(AdminRequestDTO adminRequestDTO, Account receiverAccount) {
         Money newBalance = new Money(receiverAccount.getBalance().getAmount().add(adminRequestDTO.getBalanceOperationValue()));
         receiverAccount.setBalance(newBalance);
@@ -329,15 +385,4 @@ public class TransactionServices implements ITransactionServices {
         return receiverAccount;
     }
 
-    private AccountHolder getAccountHolder(long primaryOwnerId, String s) {
-        //TODO DELETE THIS METHOD
-        AccountHolder primaryOwner = null;
-        if (primaryOwnerId >= 0) {
-            LOGGER.info("Searching AccountHolder " + primaryOwnerId);
-//            primaryOwner = accountHolderRepository.findById(primaryOwnerId);
-        } else {
-            throw new IllegalArgumentException(s + primaryOwnerId);
-        }
-        return primaryOwner;
-    }
 }

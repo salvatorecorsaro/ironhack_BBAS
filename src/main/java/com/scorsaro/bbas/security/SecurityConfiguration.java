@@ -54,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/admin/create/customer").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.PATCH, "/admin/modify").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/balance/{id}").hasRole("ACCOUNT_HOLDER")
-                .mvcMatchers(HttpMethod.GET, "/balance/all").hasRole("ACCOUNT_HOLDER")
+                .mvcMatchers(HttpMethod.GET, "/balance/all").hasAnyRole("ACCOUNT_HOLDER", "THIRD_PARTY")
                 .mvcMatchers(HttpMethod.GET, "/checking/all").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/checking/new").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/credit-card/all").hasRole("ADMIN")
@@ -66,7 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/transaction/new").hasRole("ACCOUNT_HOLDER")
                 .mvcMatchers(HttpMethod.POST, "/transaction/tpu/to").hasRole("ACCOUNT_HOLDER")
                 .mvcMatchers(HttpMethod.POST, "/transaction/tpu/from").hasRole("THIRD_PARTY")
-                .mvcMatchers(HttpMethod.POST, "/admin/create/third-party").hasRole("ACCOUNT_HOLDER")
+                .mvcMatchers(HttpMethod.POST, "/admin/create/third-party").hasRole("ADMIN")
                 .anyRequest().permitAll();
 
     }

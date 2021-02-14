@@ -25,6 +25,9 @@ public class ThirdPartyServices implements IThirdPartyServices {
     @Autowired
     RoleRepository roleRepository;
 
+    /*
+    Create a ThirdPartyUser
+     */
     @Override
     public ThirdPartyDTO createThirdParty(ThirdPartyDTO thirdPartyDTO) {
         User foundUser = userRepository.findByUsername(thirdPartyDTO.getUsername());

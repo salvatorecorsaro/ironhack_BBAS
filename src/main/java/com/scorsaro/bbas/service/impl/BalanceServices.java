@@ -28,6 +28,9 @@ public class BalanceServices implements IBalanceServices {
     @Autowired
     AccountHolderRepository accountHolderRepository;
 
+    /*
+    Return the updated balance of the request account with all the temporal operation applied
+     */
     @Override
     public BalanceDTO getOwnedAccountBalance(User user, long id) {
 
@@ -48,6 +51,9 @@ public class BalanceServices implements IBalanceServices {
         return new BalanceDTO();
     }
 
+    /*
+    Return the updated balance of the sum of all the account of the user with all the temporal operation applied
+     */
     @Override
     public BalanceDTO getAllOwnedAccountBalance(User user) {
         User foundUser = userRepository.findByUsername(user.getUsername());

@@ -7,5 +7,4 @@ import java.util.List;
 public interface IStudentServices {
     List<StudentDTO> findAll();
 
-    StudentDTO create(StudentDTO studentDTO);
 }

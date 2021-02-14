@@ -23,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -73,6 +74,13 @@ class AccountHolderControllerTest {
         MvcResult result = mockMvc.perform(get("/account-holder")
                 .with(user("admin").roles("ADMIN"))).andExpect(status().isOk()).andReturn();
         assertTrue(result.getResponse().getContentAsString().contains("Luca"));
+    }
+
+    @Test
+    void getAll_fail() throws Exception {
+        MvcResult result = mockMvc.perform(get("/account-holder")
+                .with(user("admin").roles("ADMIN"))).andExpect(status().isOk()).andReturn();
+        assertFalse(result.getResponse().getContentAsString().contains("Renato"));
     }
 
     @Test
