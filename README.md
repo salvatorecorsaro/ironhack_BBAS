@@ -1,4 +1,4 @@
-# ironhack_midterm_BBAS
+# BBAS - BABYLON BANKING API SYSTEM
 ![cover](https://i.ibb.co/0tD9dFB/Capture.png)
 
 <br />
