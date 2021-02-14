@@ -51,7 +51,7 @@ public class AccountHolder extends User {
     }
 
     public static AccountHolder parseFromAccountHolderDTO(AccountHolderDTO accountHolderDTO) {
-        return new AccountHolder(accountHolderDTO.getUsername(),
+        return new AccountHolder(accountHolderDTO.getUsername().toLowerCase(),
                 accountHolderDTO.getPassword(),
                 accountHolderDTO.getName(),
                 accountHolderDTO.getDateOfBirth(),

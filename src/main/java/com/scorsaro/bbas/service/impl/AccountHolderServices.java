@@ -44,7 +44,7 @@ public class AccountHolderServices implements IAccountHolderServices {
 
     @Override
     public AccountHolderDTO create(AccountHolderDTO accountHolderDTO) {
-        User foundUser = userRepository.findByUsername(accountHolderDTO.getUsername());
+        User foundUser = userRepository.findByUsername(accountHolderDTO.getUsername().toLowerCase());
         if (foundUser != null) {
             LOGGER.error("Error during AccountHolder creation: " + accountHolderDTO.getUsername() + " is already taken");
             throw new IllegalArgumentException("Username " + accountHolderDTO.getUsername() + " is already taken");

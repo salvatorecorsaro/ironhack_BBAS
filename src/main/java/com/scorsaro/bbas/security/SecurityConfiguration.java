@@ -64,21 +64,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/student/all").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/transaction/all").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/transaction/new").hasRole("ACCOUNT_HOLDER")
+                .mvcMatchers(HttpMethod.POST, "/transaction/tpu/to").hasRole("ACCOUNT_HOLDER")
+                .mvcMatchers(HttpMethod.POST, "/transaction/tpu/from").hasRole("THIRD_PARTY")
+                .mvcMatchers(HttpMethod.POST, "/admin/create/third-party").hasRole("ACCOUNT_HOLDER")
                 .anyRequest().permitAll();
-//                .mvcMatchers("/author/delete/").hasRole("ADMIN")
-//                .mvcMatchers("/blog-post/delete/").hasRole("ADMIN")
-//                .anyRequest().permitAll();
-//
-//                    .mvcMatchers(HttpMethod.PUT,"/blog-post").hasAnyRole("ADMIN", "CONTRIBUTOR")
-//    }
-//        httpSecurity.httpBasic();
-//        httpSecurity.authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/api/v1/transactions").hasAuthority("ROLE_ACCOUNTHOLDER")
-//                .antMatchers("/api/v1/users/accounts/**").hasAuthority("ROLE_ACCOUNTHOLDER")
-//                .antMatchers("/api/v1/(accounts/**|third-parties|users|checking-accounts|savings-accounts|credit-cards|student-accounts)").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/api/v1/third-parties/accounts/**").hasAuthority("ROLE_THIRDPARTY");
-//
-//        // disabled CSRF allows POST and DELETE requests
-//        httpSecurity.csrf().disable();
+
     }
 }

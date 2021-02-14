@@ -38,7 +38,7 @@ public class ValidationServices implements IValidationServices {
 
     @Override
     public boolean validateTransaction(Transaction transaction) {
-//        validateSufficientFunds(transaction);
+        validateSufficientFunds(transaction);
         validateTimeSinceLastTransaction(transaction);
         validateDailyLimit(transaction);
 

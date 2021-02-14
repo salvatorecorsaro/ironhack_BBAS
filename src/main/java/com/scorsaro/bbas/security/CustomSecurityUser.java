@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CustomSecurityUser extends User implements UserDetails {
-    private static final long serialVersionUID = -4381938875186527688L;
     private static final Logger LOGGER = LogManager.getLogger(CustomSecurityUser.class);
 
     public CustomSecurityUser(User user) {

@@ -1,8 +1,10 @@
 package com.scorsaro.bbas.service.impl;
 
 import com.scorsaro.bbas.dto.users.ThirdPartyDTO;
+import com.scorsaro.bbas.model.users.Role;
 import com.scorsaro.bbas.model.users.ThirdParty;
 import com.scorsaro.bbas.model.users.User;
+import com.scorsaro.bbas.repository.accounts.RoleRepository;
 import com.scorsaro.bbas.repository.accounts.UserRepository;
 import com.scorsaro.bbas.repository.users.ThirdPartyRepository;
 import com.scorsaro.bbas.service.interfaces.IThirdPartyServices;
@@ -20,6 +22,9 @@ public class ThirdPartyServices implements IThirdPartyServices {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     @Override
     public ThirdPartyDTO createThirdParty(ThirdPartyDTO thirdPartyDTO) {
         User foundUser = userRepository.findByUsername(thirdPartyDTO.getUsername());
@@ -29,6 +34,10 @@ public class ThirdPartyServices implements IThirdPartyServices {
         }
         ThirdParty thirdParty = ThirdParty.parseFromThirdPartyDTO(thirdPartyDTO);
         thirdPartyRepository.save(thirdParty);
+
+        Role role = new Role("THIRD_PARTY", thirdParty);
+        roleRepository.save(role);
+        LOGGER.info("TPU created with username: " + thirdParty.getUsername());
         return ThirdPartyDTO.parseFromThirdParty(thirdParty);
     }
 }
