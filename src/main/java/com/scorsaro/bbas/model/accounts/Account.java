@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Account {
+    public static final Money PENALTY_FEE = new Money(BigDecimal.valueOf(40));
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -55,7 +56,7 @@ public class Account {
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
         setBalance(new Money(BigDecimal.ZERO));
-        setPenaltyFee(new Money(BigDecimal.valueOf(20)));
+        setPenaltyFee(PENALTY_FEE);
         setCreationDate(LocalDate.now());
     }
 

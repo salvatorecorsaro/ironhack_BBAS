@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 
 @Entity
 public class Saving extends Account {
+    public static final BigDecimal DEFAULT_INTEREST_RATE = BigDecimal.valueOf(0.0025);
+    public static final Money DEFAULT_MINIMUM_BALANCE = new Money(BigDecimal.valueOf(1000));
     private String secretKey;
     @Embedded
     @AttributeOverrides({
@@ -33,8 +35,19 @@ public class Saving extends Account {
         super(primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
         this.minimumBalance = minimumBalance;
+
         this.status = Status.ACTIVE;
         this.interestRate = interestRate;
+        applyDefaultValues();
+    }
+
+    private void applyDefaultValues() {
+        if (this.interestRate == null) {
+            this.interestRate = DEFAULT_INTEREST_RATE;
+        }
+        if (this.minimumBalance == null) {
+            this.minimumBalance = DEFAULT_MINIMUM_BALANCE;
+        }
     }
 
     public static Saving parseFromSavingDto(AccountHolder primaryOwner,

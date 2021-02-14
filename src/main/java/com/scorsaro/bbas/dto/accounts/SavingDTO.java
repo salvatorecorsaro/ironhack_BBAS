@@ -3,18 +3,30 @@ package com.scorsaro.bbas.dto.accounts;
 import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.accounts.Saving;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class SavingDTO {
     private long id;
+    @Valid
+    @NotNull(message = "Balance is required")
     private BigDecimal balance;
+    @Min(value = 1, message = "A primary owner is required to create an account")
     private Long primaryOwner;
     private Long secondaryOwner;
     private BigDecimal penaltyFee;
     private Status status;
+    @NotNull(message = "SecretKey is required")
     private String secretKey;
+    @DecimalMin(value = "100", message = "Minimum balance must be above 100")
     private BigDecimal minimumBalance;
+    @DecimalMax(value = "0.5", message = "Interest rate must be below 0.5")
+    @DecimalMin(value = "0", message = "Interest rate shouldn't be a negative value")
     private BigDecimal interestRate;
     private LocalDate creationDate;
 

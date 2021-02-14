@@ -1,31 +1,24 @@
 package com.scorsaro.bbas.model.users;
 
+import com.scorsaro.bbas.dto.users.ThirdPartyDTO;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class ThirdParty {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class ThirdParty extends User {
+
     private String hashedKey;
 
     public ThirdParty() {
     }
 
     public ThirdParty(String username, String password, String hashedKey) {
-//        super(username, password);
+        super(username, password);
         this.hashedKey = hashedKey;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public static ThirdParty parseFromThirdPartyDTO(ThirdPartyDTO thirdPartyDTO) {
+        return new ThirdParty(thirdPartyDTO.getUsername(), thirdPartyDTO.getPassword(), thirdPartyDTO.getHashedKey());
     }
 
     public String getHashedKey() {

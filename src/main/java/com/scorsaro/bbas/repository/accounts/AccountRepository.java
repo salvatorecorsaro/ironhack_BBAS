@@ -1,6 +1,7 @@
 package com.scorsaro.bbas.repository.accounts;
 
 import com.scorsaro.bbas.model.accounts.Account;
+import com.scorsaro.bbas.model.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,14 +11,14 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    @Query("SELECT  a FROM Account a WHERE primaryOwner = :id OR secondaryOwner = :id")
-    List<Account> findAllAccountsOwnedByUser(@Param("id") long id);
-
-    @Query("SELECT a FROM Account a WHERE (primaryOwner = :userId OR secondaryOwner = :userId) AND id = :accountId")
-    Account findAccountByIdIfOwnedByUser(@Param("userId") long userId, @Param("accountId") long accountId);
-
     @Query("SELECT a From Account a WHERE a.id = :accountId")
     Account findAccountById(@Param("accountId") Long id);
+
+    @Query("SELECT  a FROM Account a WHERE primaryOwner = :id OR secondaryOwner = :id")
+    List<Account> findAllAccountsOwnedByUser(@Param("id") User accountHolder);
+
+    @Query("SELECT a FROM Account a WHERE (primaryOwner = :userId OR secondaryOwner = :userId) AND id = :accountId")
+    Account findAccountByIdIfOwnedByUser(@Param("userId") User accountHolder, @Param("accountId") long accountId);
 
 }
 

@@ -1,36 +1,34 @@
 package com.scorsaro.bbas.dto.users;
 
-import java.util.Optional;
-
 public class UserDTO {
-    protected Optional<String> id;
-    protected Optional<String> username;
-    protected Optional<String> password;
+    protected Long id;
+    protected String username;
+    protected String password;
 
     public UserDTO() {
     }
 
-    public Optional<String> getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Optional<String> id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Optional<String> getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(Optional<String> username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public Optional<String> getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Optional<String> password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

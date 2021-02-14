@@ -1,6 +1,7 @@
 package com.scorsaro.bbas.model.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scorsaro.bbas.dto.users.AccountHolderDTO;
 import com.scorsaro.bbas.model.accounts.Account;
 import com.scorsaro.bbas.model.others.Address;
 import com.scorsaro.bbas.model.others.Name;
@@ -47,6 +48,15 @@ public class AccountHolder extends User {
         this.dateOfBirth = dateOfBirth;
         this.primaryAddress = primaryAddress;
         this.email = email;
+    }
+
+    public static AccountHolder parseFromAccountHolderDTO(AccountHolderDTO accountHolderDTO) {
+        return new AccountHolder(accountHolderDTO.getUsername(),
+                accountHolderDTO.getPassword(),
+                accountHolderDTO.getName(),
+                accountHolderDTO.getDateOfBirth(),
+                accountHolderDTO.getPrimaryAddress(),
+                accountHolderDTO.getEmail());
     }
 
     public Name getName() {

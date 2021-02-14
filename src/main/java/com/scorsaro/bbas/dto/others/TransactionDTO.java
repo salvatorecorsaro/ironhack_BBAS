@@ -1,6 +1,7 @@
 package com.scorsaro.bbas.dto.others;
 
 import com.scorsaro.bbas.enums.TransactionType;
+import com.scorsaro.bbas.model.accounts.Account;
 import com.scorsaro.bbas.model.others.Name;
 import com.scorsaro.bbas.model.others.Transaction;
 
@@ -16,6 +17,7 @@ public class TransactionDTO {
     private TransactionType transactionType;
     private String reason;
     private LocalDateTime localDateTime;
+    private String secretKey;
 
     public TransactionDTO() {
     }
@@ -39,10 +41,24 @@ public class TransactionDTO {
     }
 
     public static TransactionDTO parseFromTransaction(Transaction transaction) {
+        Account senderAccount = transaction.getSenderAccount();
+        long senderAccountId;
+        if (senderAccount == null)
+            senderAccountId = -1;
+        else
+            senderAccountId = senderAccount.getId();
+
+        Account receiverAccount = transaction.getReceiverAccount();
+        long receiverAccountId;
+        if (receiverAccount == null)
+            receiverAccountId = -1;
+        else
+            receiverAccountId = receiverAccount.getId();
+
         return new TransactionDTO(
                 transaction.getId(),
-                transaction.getSenderAccount().getId(),
-                transaction.getReceiverAccount().getId(),
+                senderAccountId,
+                receiverAccountId,
                 transaction.getReceiverAccount().getPrimaryOwner().getName(),
                 transaction.getAmount().getAmount(),
                 transaction.getTransactionType(),
@@ -113,5 +129,13 @@ public class TransactionDTO {
 
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

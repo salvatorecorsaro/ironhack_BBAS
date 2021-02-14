@@ -2,15 +2,27 @@ package com.scorsaro.bbas.dto.accounts;
 
 import com.scorsaro.bbas.model.accounts.CreditCard;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CreditCardDTO {
     private long id;
+    @Valid
+    @NotNull(message = "Balance is required")
     private BigDecimal balance;
+    @Min(value = 1, message = "A primary owner is required to create an account")
     private Long primaryOwner;
     private Long secondaryOwner;
+    @DecimalMin(value = "100", message = "Credit limit must be above 100")
+    @DecimalMax(value = "100000", message = "Credit limit must be below 100000")
     private BigDecimal creditLimit;
+    @DecimalMin(value = "0.1", message = "Interest rate must be above 0.1")
+    @DecimalMax(value = "0.2", message = "Interest rate must be below 0.2")
     private BigDecimal interestRate;
     private BigDecimal penaltyFee;
     private LocalDate creationDate;

@@ -48,7 +48,7 @@ public class Transaction {
         return new Transaction(senderAccount,
                 receiverAccount,
                 transactionDTO.getReceiverName(), new Money(transactionDTO.getAmount()),
-                transactionDTO.getReason(), transactionDTO.getTransactionType()
+                transactionDTO.getReason(), TransactionType.TRANSFER
         );
     }
 

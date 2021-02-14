@@ -1,7 +1,9 @@
 package com.scorsaro.bbas.service.impl;
 
+import com.scorsaro.bbas.model.accounts.Account;
 import com.scorsaro.bbas.model.others.Name;
 import com.scorsaro.bbas.model.others.Transaction;
+import com.scorsaro.bbas.model.users.User;
 import com.scorsaro.bbas.repository.accounts.*;
 import com.scorsaro.bbas.repository.users.AccountHolderRepository;
 import com.scorsaro.bbas.service.interfaces.IValidationServices;
@@ -39,30 +41,40 @@ public class ValidationServices implements IValidationServices {
 //        validateSufficientFunds(transaction);
         validateTimeSinceLastTransaction(transaction);
         validateDailyLimit(transaction);
-        validateRequestName(transaction);
 
         return true;
     }
 
     @Override
     public boolean validateStudentAge(LocalDate dateOfBirth) {
-        //TODO tests
         long yearPassed = ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
         return yearPassed < 24;
     }
 
-    private void validateRequestName(Transaction transaction) {
-        //TODO test Name validation
+    @Override
+    public boolean validateAccountAreDifferent(long firstId, long secondId) {
+        return firstId != secondId;
+    }
+
+    @Override
+    public boolean validateAccountOwnership(User user, Account senderAccount) {
+        if (user.getId() == senderAccount.getPrimaryOwner().getId() || user.getId() == senderAccount.getSecondaryOwner().getId())
+            return true;
+        return false;
+    }
+
+
+    @Override
+    public boolean validateRequestName(Transaction transaction) {
         Name receiverRequestName = transaction.getReceiverName();
         Name receiverExpectedName = transaction.getReceiverAccount().getPrimaryOwner().getName();
         if (!(receiverRequestName.equals(receiverExpectedName))) {
             throw new IllegalArgumentException("Name from request and account are not the same");
         }
+        return true;
     }
 
     private void validateDailyLimit(Transaction transaction) {
-        //what to do the first day first transaction?
-        //TODO test with more days cases
         BigDecimal highestDailyOutput = transactionRepository.findHighestDailyTransactionByCustomer(LocalDateTime.now(), transaction.getSenderAccount());
         BigDecimal todayTotalOutput = transactionRepository.findTodayTotalTransactions(LocalDateTime.now(), transaction.getSenderAccount());
         if (highestDailyOutput != null) {

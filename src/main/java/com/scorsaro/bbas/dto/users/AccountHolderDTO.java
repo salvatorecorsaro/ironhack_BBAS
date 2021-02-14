@@ -4,13 +4,19 @@ import com.scorsaro.bbas.model.others.Address;
 import com.scorsaro.bbas.model.others.Name;
 import com.scorsaro.bbas.model.users.AccountHolder;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class AccountHolderDTO {
     private Long id;
+    @NotNull(message = "username is required")
     private String username;
+    private String password;
+    @NotNull(message = "name is required")
     private Name name;
+    @NotNull(message = "dateOfBirth is required")
     private LocalDate dateOfBirth;
+    @NotNull(message = "primaryAddress is required")
     private Address primaryAddress;
     private String email;
 
@@ -90,5 +96,13 @@ public class AccountHolderDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

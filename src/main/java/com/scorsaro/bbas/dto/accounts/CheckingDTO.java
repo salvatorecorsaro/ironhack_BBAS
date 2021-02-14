@@ -4,16 +4,24 @@ import com.scorsaro.bbas.enums.Status;
 import com.scorsaro.bbas.model.accounts.Checking;
 import com.scorsaro.bbas.model.accounts.Student;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CheckingDTO {
+
     private long id;
+    @Valid
+    @NotNull(message = "Balance is required")
     private BigDecimal balance;
+    @Min(value = 1, message = "A primary owner is required to create an account")
     private Long primaryOwner;
     private Long secondaryOwner;
     private BigDecimal penaltyFee;
     private Status status;
+    @NotNull(message = "SecretKey is required")
     private String secretKey;
     private BigDecimal minimumBalance;
     private BigDecimal monthlyMaintenanceFee;

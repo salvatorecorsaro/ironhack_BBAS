@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 
 @Entity
 public class Checking extends Account {
+    public static final Money MINIMUM_BALANCE = new Money(BigDecimal.valueOf(250));
+    public static final Money MONTHLY_MAINTENANCE_FEE = new Money(BigDecimal.valueOf(12));
     private String secretKey;
     @Embedded
     @AttributeOverrides({
@@ -37,9 +39,7 @@ public class Checking extends Account {
         return new Checking(
                 primaryOwner,
                 secondaryOwner,
-                checkingDTO.getSecretKey(),
-                new Money(checkingDTO.getMinimumBalance()),
-                new Money(checkingDTO.getMonthlyMaintenanceFee())
+                checkingDTO.getSecretKey()
         );
     }
 
@@ -48,13 +48,12 @@ public class Checking extends Account {
         this.secretKey = secretKey;
     }
 
-    public Checking(AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, Money minimumBalance, Money monthlyMaintenanceFee) {
+    public Checking(AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey) {
         super(primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
-        this.minimumBalance = minimumBalance;
         setStatus(Status.ACTIVE);
-        setPenaltyFee(new Money(BigDecimal.valueOf(20)));
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+        setMinimumBalance(MINIMUM_BALANCE);
+        setMonthlyMaintenanceFee(MONTHLY_MAINTENANCE_FEE);
     }
 
     public String getSecretKey() {

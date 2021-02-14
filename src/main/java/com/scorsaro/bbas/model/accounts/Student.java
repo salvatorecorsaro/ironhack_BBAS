@@ -22,6 +22,7 @@ public class Student extends Account {
         super(primaryOwner, secondaryOwner);
         this.secretKey = secretKey;
         this.status = status;
+
     }
 
     public static Student parseFromCheckingDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, CheckingDTO checkingDTO) {

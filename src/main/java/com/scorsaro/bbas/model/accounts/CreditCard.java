@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 
 @Entity
 public class CreditCard extends Account {
+    public static final Money DEFAULT_CREDIT_LIMIT = new Money(BigDecimal.valueOf(100));
+    public static final BigDecimal DEFAULT_INTEREST_RATE = BigDecimal.valueOf(0.02);
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "currency", column = @Column(name = "credit_limit_currency")),
@@ -29,6 +31,16 @@ public class CreditCard extends Account {
         super(primaryOwner, secondaryOwner);
         this.creditLimit = creditLimit;
         this.interestRate = interestRate;
+        applyDefaultValues();
+    }
+
+    private void applyDefaultValues() {
+        if (this.creditLimit == null) {
+            creditLimit = DEFAULT_CREDIT_LIMIT;
+        }
+        if (this.interestRate == null) {
+            interestRate = DEFAULT_INTEREST_RATE;
+        }
     }
 
     public static CreditCard parseFromCreditCardDTO(AccountHolder primaryOwner, AccountHolder secondaryOwner, CreditCardDTO creditCardDTO) {
